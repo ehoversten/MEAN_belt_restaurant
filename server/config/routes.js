@@ -2,6 +2,7 @@ const path = require("path");
 const mongoose = require('mongoose');
 
 let RestaurantController = require("../controllers/RestaurantController.js");
+let ReviewController = require("../controllers/ReviewController.js");
 
 module.exports = function(app) {
 
@@ -11,6 +12,8 @@ module.exports = function(app) {
   app.delete("/api/restaurants/:id", RestaurantController.delete);
   app.put("/api/restaurants/:id", RestaurantController.update);
 
+  app.get("/api/restaurants/:id/reviews", ReviewController.display_all);
+  app.post("/api/restaurants/:id/reviews", ReviewController.create);
   // if we dont hit ay of our backend routes, serve our Angular App
   app.all("*", (req, res, next)=> {
     res.sendFile(path.resolve("./client/public/dist/public/index.html"));

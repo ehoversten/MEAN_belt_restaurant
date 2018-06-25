@@ -6,18 +6,24 @@ class RestaurantController {
 // ------- display_all METHOD ------------------ //
 
   display_all(req, res) {
-    Restaurant.find( {}, (err, restaurants)=> {
-      if(restaurants) {
-        console.log("Found: ", restaurants)
-        // return all tasks as JSON OBJECTS
-        return res.json(restaurants);
-			} else {
-				return res.json( {
-          "error":err,
-          "message":"Something went terribly terribly wrong!",
-        });
-			}
-    });
+    Restaurant.find( {} )
+      .populate({
+        // our Foreign Key association
+        model:'Review',
+        path: 'reviews'
+      })
+      .exec((err, data) => {
+        if(data) {
+          console.log("Found: ", data)
+          // return all tasks as JSON OBJECTS
+          return res.json(data);
+  			} else {
+  				return res.json( {
+            "error":err,
+            "message":"Something went terribly terribly wrong!",
+          });
+  			}
+      });
   }
 
 // ------- findById METHOD ------------------ //
@@ -139,43 +145,6 @@ class RestaurantController {
 
     });
   }
-  // *************************************************//
-       // ---- Create A Review Entry ????
-  // *************************************************//
-
-
-  // Review.create(req.body, (err, data) => {
-  //   let rest_review = new Review(req.body);
-  //
-  //   // handle the error from creating a review
-  //   if(err) {
-  //     console.log("Something went wrong", err);
-  //     return res.json({
-  //       "error":err.errors,
-  //       "message":"Failed to create Review"
-  //   } else {
-  //
-  //     Restaurant.findOneAndUpdate({_id: req.params.id}, {$push: {reviews: data}}, function(err, data){
-  //       if(err){
-  //         // handle the error from trying to update the user
-  //         console.log("Review did not save", err);
-  //         return res.json({
-  //           "error":err.errors,
-  //           "message":"Failed to update Review" + req.params.id
-  //         });
-  //       } else {
-  //         // it worked! How shall we celebrate?
-  //         console.log("Review updated successfully");
-  //         return res.json(restaurant);
-  //       }
-  //      });
-  //    }
-  // });
-
-  // *************************************************//
-
-
-// *************************************************//
 
 
 
