@@ -8,10 +8,11 @@ class RestaurantController {
   display_all(req, res) {
     Restaurant.find( {} )
       .populate({
-        // our Foreign Key association
+//---- our Foreign Key association
         model:'Review',
         path: 'reviews'
       })
+// ---- once .populate() knows what we want to reference and where to find that blueprint we 'execute' the following function... which is our callback or error.
       .exec((err, data) => {
         if(data) {
           console.log("Found: ", data)
@@ -30,19 +31,21 @@ class RestaurantController {
 
 
   find_restaurant(req, res) {
-    console.log("POST DATA: ", req.params);
-    Restaurant.findOne( {_id:req.params.id}, (err, restaurant)=> {
-      if(restaurant) {
-        console.log("Found: ", restaurant);
-        return res.json(restaurant);
-      } else {
-        console.log("Restaurant not found", err);
-        return res.json({
-          "error":err,
-          "message":"Failed to find Restaurant with id:"+req.params.id
-        });
-      }
-    });
+      Restaurant.findOne({_id:req.params.id})
+      .populate({
+          path:"reviews",
+          model:"Review"
+      })
+      .exec((err,data)=>{
+          if(data){
+              return res.json(data);
+          }else{
+              return res.json({
+                "error":err,
+                "message":"Failed to find Restaurant" + req.params.id
+              });
+          }
+      })
   }
 
 // ------- create METHOD ------------------ //
@@ -76,7 +79,6 @@ class RestaurantController {
         // if the field was updated, update it. If not changed, save what we had before
         restaurant.name = req.body.name || restaurant.name;
         restaurant.cuisine = req.body.cuisine || restaurant.cuisine;
-        restaurant._restaurant_id.rest_review = req.body.review || restaurant._restaurant_id.rest_review;
 
         restaurant.save( err=> {
           if(err) {
@@ -119,7 +121,6 @@ class RestaurantController {
   delete(req, res) {
     console.log("hit distroy route");
     Restaurant.findOne({_id: req.params.id}, (err, restaurant)=> {
-
       if(restaurant){
 
         Restaurant.remove( {_id:req.params.id}, function(err) {
@@ -142,7 +143,6 @@ class RestaurantController {
           "message":"Failed to find Restaurant" + req.params.id
         });
       }
-
     });
   }
 

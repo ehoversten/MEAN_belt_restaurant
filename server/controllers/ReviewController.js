@@ -2,19 +2,35 @@
 const Review = require('mongoose').model('Review');
 const Restaurant = require('mongoose').model('Restaurant');
 
-
 class ReviewController {
-
+// ------- Find One Review METHOD ------------------ //
+    find(req,res){
+        Review.findOne({_id:req.params.id})
+        .populate({
+            model:"Restaurant",
+            path:"restaurant"
+        })
+        .exec((err,review)=>{
+            if(review){
+                return res.json(data);
+            }else{
+                return res.json({
+                    errors:err,
+                    message:"Failed to populate restaurant for review."
+                });
+            }
+        })
+    }
 // ------- display_all METHOD ------------------ //
 
   display_all(req, res) {
     Review.find( {} )
     .populate({
-  // our Foreign Key association
+//--- our Foreign Key association
       model:'Restaurant',
       path: 'restaurant'
     })
-
+// ---- once .populate() knows what we want to reference and where to find that blueprint we 'execute' the following function... which is our callback or error.
     .exec((err, data) => {
       if(reviews) {
         console.log("Found: ", reviews)
@@ -48,6 +64,7 @@ class ReviewController {
         Restaurant.findOne( {_id:req.params.id}, (err, restaurant)=> {
           if(restaurant) {
             console.log("Found: ", restaurant);
+          // put the ID of this review into the 'reviews' array in the this restaurant(_id) instance
             restaurant.reviews.push(review._id);
             return res.json(review);
           } else {
