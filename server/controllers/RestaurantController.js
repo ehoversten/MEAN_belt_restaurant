@@ -53,7 +53,7 @@ class RestaurantController {
 
   create(req, res) {
     let restaurant = new Restaurant(req.body);
-    console.log("POST DATA: ", req.body);
+
     restaurant.save(err=> {
       if(err) {
         console.log("Something went wrong", err);

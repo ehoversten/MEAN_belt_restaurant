@@ -1,3 +1,19 @@
-<p>
-  restaurant works!
-</p>
+<div *ngIf="restaurant">
+  {{ restaurant.reviews | json }}
+
+  <button [routerLink]="['reviews']" >New Review</button>
+
+  <table border="1">
+      <tr>
+          <td>Customer:</td>
+          <td>Stars:</td>
+          <td>Review:</td>
+      </tr>
+
+      <tr *ngFor="let review of restaurant.reviews">
+          <td>{{ review.reviewer_name }}</td>
+          <td>{{ review.rating }}</td>
+          <td>{{ review.review }}</td>
+      </tr>
+  </table>
+</div>

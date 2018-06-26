@@ -16,8 +16,8 @@ export class RestaurantService {
         this.http.get("/api/restaurants")
         .subscribe( data => cb(data) );
     }
-    findById(restaurant,cb){
-        this.http.get("/api/restaurants/"+restaurant._id )
+    findById(id,cb){
+        this.http.get("/api/restaurants/"+id )
         .subscribe( data => cb(data) );
     }
     destroy(restaurant,cb){

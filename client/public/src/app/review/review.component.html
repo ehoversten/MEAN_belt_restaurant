@@ -1,3 +1,9 @@
-<p>
-  review works!
-</p>
+{{ review | json }}
+
+<form (submit)="create()">
+    <p>Reviewer:<input name="review.reviewer_name" [(ngModel)]="review.reviewer_name" /></p>
+    <p>Stars:<input name="review.rating" [(ngModel)]="review.rating"/></p>
+    <p>Review:<input name="review.review" [(ngModel)]="review.review"/></p>
+
+    <input type="submit" value="Submit Review" />
+</form>

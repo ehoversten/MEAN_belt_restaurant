@@ -1,3 +1,10 @@
-<p>
-  new-restaurant works!
-</p>
+{{ restaurant | json }}
+
+<h2 *ngFor="let error of errors">{{ error }}</h2>
+
+<form (submit)="create()" >
+    <input name="restaurant.name" [(ngModel)]="restaurant.name" />
+    <input name="restaurant.cuisine" [(ngModel)]="restaurant.cuisine" />
+
+    <input type="submit" value="Create Restaurant" />
+</form>

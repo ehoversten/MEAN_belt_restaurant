@@ -12,7 +12,7 @@ class ReviewController {
         })
         .exec((err,review)=>{
             if(review){
-                return res.json(data);
+                return res.json(review);
             }else{
                 return res.json({
                     errors:err,
@@ -54,7 +54,7 @@ class ReviewController {
 //----  save review to DB ------
     review.save(err=> {
       if(err) {
-        console.log("Something went wrong", err);
+        // console.log("Something went wrong", err);
         return res.json({
           "error":err.errors,
           "message":"Failed to create review"
@@ -63,19 +63,27 @@ class ReviewController {
         //-----  find the associated Restaurant  ------
         Restaurant.findOne( {_id:req.params.id}, (err, restaurant)=> {
           if(restaurant) {
-            console.log("Found: ", restaurant);
+            // console.log("Found: ", restaurant);
           // put the ID of this review into the 'reviews' array in the this restaurant(_id) instance
+            console.log(review);
             restaurant.reviews.push(review._id);
-            return res.json(review);
+
+            restaurant.save(err=>{
+                if(err){
+                    return res.json("GO fix your problems");
+                }else{
+                    return res.json(review);
+                }
+            });
           } else {
-            console.log("Restaurant not found", err);
+            // console.log("Restaurant not found", err);
             return res.json({
               "error":err,
               "message":"Failed to find Restaurant with id:" + req.params.id
             });
           }
         });
-        console.log("review created successfully");
+        // console.log("review created successfully");
         // return res.json(review);
       }
     });

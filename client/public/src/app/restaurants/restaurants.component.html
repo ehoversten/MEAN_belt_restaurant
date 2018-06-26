@@ -1,3 +1,17 @@
-<p>
-  restaurants works!
-</p>
+<table border="1">
+    <tr>
+        <td>Restaurant</td>
+        <td>Cuisine</td>
+        <td>Actions</td>
+    </tr>
+
+    <tr *ngFor="let restaurant of restaurants" >
+        <td>{{ restaurant.name }}</td>
+        <td>{{ restaurant.cuisine }}</td>
+        <td>
+            <button [routerLink]="[ restaurant._id ]" >Read Reviews</button>
+            <button [routerLink]="[ restaurant._id, 'edit' ]">Update</button>
+            <button (click)="destroy(restaurant)" >Delete</button>
+        </td>
+    </tr>
+</table>
