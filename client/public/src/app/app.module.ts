@@ -10,21 +10,32 @@ import { EditComponent } from './edit/edit.component';
 import { DetailComponent } from './detail/detail.component';
 import { ReviewComponent } from './review/review.component';
 
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule } from "@angular/forms";
+
+import {ReviewService} from "./review.service";
+import {RestaurantService} from "./restaurant.service";
+
 @NgModule({
   declarations: [
-    AppComponent,
-    RestaurantsComponent,
-    RestaurantComponent,
-    NewRestaurantComponent,
-    EditComponent,
-    DetailComponent,
-    ReviewComponent
+      AppComponent,
+      RestaurantsComponent,
+      RestaurantComponent,
+      NewRestaurantComponent,
+      EditComponent,
+      DetailComponent,
+      ReviewComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule
+      BrowserModule,
+      AppRoutingModule,
+      HttpClientModule,
+      FormsModule
   ],
-  providers: [],
+  providers:[
+      ReviewService,
+      RestaurantService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
